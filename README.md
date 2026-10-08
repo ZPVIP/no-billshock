@@ -17,6 +17,8 @@ A serverless function that schedules itself, retries indefinitely, re-enqueues m
 
 A real-world failure pattern: a Durable Object checkpoint with a 30-day TTL and a refresh beginning 7 days before expiration can appear safe for about 23 days. Once its refresh window opens, a stale alarm timestamp can cause an autonomous loop of wakeups and metered storage operations. Initial smoke tests will not reveal this.
 
+For more real-world incidents, [ServerlessHorrors](https://serverlesshorrors.com/) collects public stories of surprise serverless and cloud bills, including runaway Durable Object alarm loops that cost thousands to tens of thousands of dollars and Firebase or Vercel bills that reached five or six figures.
+
 The guard prompts coding agents to trace and **bound** these chains, test virtual time transitions and verify kill switches before declaring a deployment ready.
 
 ## What it covers

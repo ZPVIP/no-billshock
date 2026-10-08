@@ -20,6 +20,8 @@
 - Cloudflare Worker 将公开请求转发至计费的 Lambda Function URL，而 AWS 原始入口仍能被直接调用。
 - 大量 fan-out、无上限分页/扫描、反复调用付费 AI/API 服务。
 
+更多真实案例见 [ServerlessHorrors](https://serverlesshorrors.com/)。这个网站收集了公开的 Serverless 和云服务意外账单事故，包括 Durable Object alarm 死循环造成的数千到数万美元账单，以及 Firebase、Vercel 等平台高达五位数、六位数美元的费用。
+
 **不应触发：** 普通 CSS/UI 工作、文档修改、单次有明确边界的 API 调用、一般云计算概念问答，或只因为仓库里出现了 `aws` / `cloudflare` 关键字。
 
 Agent 在选择 Skill 前通常仅看到 `name` / `description`，选中后才读取 `SKILL.md`。AWS 和 Cloudflare 的详细参考文件也按需加载，而不是每次读完全部内容。
