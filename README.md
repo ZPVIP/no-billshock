@@ -87,21 +87,78 @@ no-billshock/
 
 The installable skill is the **whole `skills/no-billshock/` directory**. Copy it with its `references/` subdirectory; do not copy just `SKILL.md`.
 
-## Installation
+## Install with your AI coding agent (recommended)
 
-### 0. Obtain this repository
+Ask Claude Code, Codex, Cursor, or Antigravity to install NoBillShock for you. An agent with terminal and filesystem access can fetch the repository, select the supported Skills directory, install the complete skill, and verify the result.
 
-Once you publish the repository on GitHub, replace `YOUR_GITHUB_USERNAME` below with your actual account or organization name:
+Paste the prompt below into the coding agent where you want NoBillShock installed. It uses the current project by default. Change `PROJECT` to `GLOBAL` for a user-level installation that other local projects can discover.
+
+```text
+Install the NoBillShock coding-agent skill from:
+https://github.com/ZPVIP/no-billshock
+
+Installation scope: PROJECT (the currently open repository).
+# Change PROJECT to GLOBAL to install for my user account instead.
+
+Do the installation, not just explain the steps:
+1. Identify the current coding agent (Claude Code, Codex, Cursor, or
+   Antigravity), operating system, and applicable skill directory.
+   If the scope or target repository is unclear, ask before writing files.
+2. Fetch the named GitHub repository and review the contents of
+   skills/no-billshock/ before installing. Use the supported Skills CLI
+   if appropriate and approved, or a temporary git clone plus a safe copy.
+   Install the entire folder, including SKILL.md and references/.
+3. Use this agent's actual PROJECT or GLOBAL discovery path, as documented
+   in the repository README. Do not assume all agents use the same path.
+4. If no-billshock is already installed, inspect the existing version and
+   differences; ask before overwriting it. Do not delete unrelated skills.
+5. Verify SKILL.md has name: no-billshock, required references are present,
+   and the installed path is discoverable. State whether I must restart
+   the agent session to refresh skill discovery.
+6. Report the target agent, scope, exact installed path, installation
+   method, and verification results. If you lack permissions or network
+   access, report the blocker instead of claiming success.
+
+This is an installation-only task. Do not run the skill's cloud checks,
+edit my application, change AWS/Cloudflare settings, or deploy anything.
+```
+
+The agent might ask for permission to access the network, run an external package, or write to a user-level directory. Review those requests before approving them. Installing a Skill only makes it **available for future tasks**; it does not run a cloud safety review or grant access to AWS or Cloudflare.
+
+<details>
+<summary><strong>Manual installation options</strong></summary>
+
+### Install with the Skills CLI
+
+If Node.js and npm are available, you or your coding agent can alternatively use the community [Skills CLI](https://github.com/vercel-labs/skills). Run these commands **inside the target application repository** for project scope:
 
 ```bash
-OWNER=YOUR_GITHUB_USERNAME
-git clone "https://github.com/${OWNER}/no-billshock.git"
+# Interactive installation: choose your coding agent when prompted.
+npx skills add "ZPVIP/no-billshock" --skill no-billshock
+
+# Example: install directly for Codex in this project.
+npx skills add "ZPVIP/no-billshock" --skill no-billshock -a codex
+
+# Example: install globally for Claude Code.
+npx skills add "ZPVIP/no-billshock" --skill no-billshock -a claude-code -g
+```
+
+Supported agent selectors include `claude-code`, `codex`, `cursor`, `antigravity`, and `antigravity-cli`. Add `-g` only for user-level installation. The CLI chooses directories according to its supported-agent mapping, which may change with versions; check the actual destination and agent discovery after installation. The CLI is an external npm package, **not bundled with NoBillShock**. Review and approve external package execution before using `npx`. The manual installation instructions below do not require Node.js.
+
+### Install by copying the skill files
+
+#### 1. Obtain this repository
+
+Clone the repository:
+
+```bash
+git clone "https://github.com/ZPVIP/no-billshock.git"
 cd no-billshock
 ```
 
 Or download and extract GitHub's **Code -> Download ZIP**, then enter the extracted repository directory. All following commands assume the shell's current directory is **this repository root**, not the target application's root.
 
-### 1. Choose project vs global scope
+#### 2. Choose project vs global scope
 
 | Agent | Project-level destination (inside target repo) | User-level destination (on your machine) |
 | --- | --- | --- |
@@ -115,7 +172,7 @@ Or download and extract GitHub's **Code -> Download ZIP**, then enter the extrac
 
 The shared `.agents/skills/` project path works for **Codex, Cursor and Antigravity**; Claude Code requires `.claude/skills/` (or another supported Claude customization mechanism).
 
-### 2. Project-level installation (macOS/Linux)
+#### 3. Project-level installation (macOS/Linux)
 
 Set `TARGET` to the absolute path of your **application repository**, then run **from this skill repository root**:
 
@@ -142,7 +199,7 @@ cp -R skills/no-billshock "$TARGET/.claude/skills/"
 
 **Important:** the symlink command assumes the `TARGET/.claude/skills` and `TARGET/.agents/skills` layout shown above. Do not run it if the destination already exists. Review files before committing a third-party skill into your product repo.
 
-### 3. Global installation (macOS/Linux)
+#### 4. Global installation (macOS/Linux)
 
 Run the appropriate command(s) from this skill repository root:
 
@@ -185,7 +242,7 @@ cp -R skills/no-billshock "$HOME/.gemini/antigravity-cli/skills/"
 
 These are separate *global* discovery directories, unlike the common project path. You can replace copies with carefully checked symlinks if your agent version supports following them. Avoid duplicate skills of the same name in multiple paths visible to one agent.
 
-### 4. Windows (PowerShell)
+#### 5. Windows (PowerShell)
 
 From the downloaded skill repository root, use a single command block per agent or project. Windows uses different user-home path syntax, but each skill still contains `SKILL.md` and `references/`:
 
@@ -216,7 +273,7 @@ Copy-Item -Recurse -Force '.\skills\no-billshock' "$HOME\.claude\skills\"
 
 To use another global destination, create that directory and run the corresponding `Copy-Item` command. If you already have a skill folder with this name, remove/rename or update it intentionally before copying, rather than nesting a second folder inside it.
 
-### 5. Verify installation
+#### 6. Verify installation
 
 Check the installed directory for `SKILL.md` and both reference documents. Start a **new agent session** if the agent does not immediately discover a newly installed skill.
 
@@ -235,6 +292,8 @@ Change the button color in this UI component.
 ```
 
 The billing skill should not activate. See [activation examples](examples/activation-tests.md).
+
+</details>
 
 ## How to use the skill
 

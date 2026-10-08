@@ -58,7 +58,66 @@ no-billshock/
 
 安装时必须复制 **整个** `skills/no-billshock/` 文件夹，包括 `references/`。
 
-## 安装路径（已针对各平台核对）
+## 让 AI Agent 自动安装（推荐）
+
+把下面的安装指令发给 Claude Code、Codex、Cursor 或 Antigravity，它就可以下载、安装并验证 NoBillShock。只要 Agent 有终端和文件系统访问权限，你就不需要手动克隆仓库或复制文件。
+
+将整段指令粘贴到要安装 Skill 的 Coding Agent 中。默认安装到当前项目；如果希望本机其他项目也能发现它，把 `PROJECT` 改成 `GLOBAL`。
+
+```text
+Please install the NoBillShock coding-agent skill from:
+https://github.com/ZPVIP/no-billshock
+
+Installation scope: PROJECT (the currently open repository).
+# Replace PROJECT with GLOBAL for a user-level installation.
+
+Perform the installation instead of only explaining how:
+1. Identify the current coding agent (Claude Code, Codex, Cursor, or
+   Antigravity), operating system, and correct skills discovery path.
+   Ask if the target project or scope is ambiguous.
+2. Fetch the repository and review skills/no-billshock/ before install.
+   Use the supported Skills CLI when appropriate and approved, or clone
+   into a temporary directory and safely copy the complete skill folder
+   including SKILL.md and references/.
+3. Install at the correct PROJECT or GLOBAL path from its README. Do not
+   assume every agent has the same discovery path.
+4. If the destination already exists, inspect it and ask before replacing
+   anything. Do not overwrite unrelated skills or custom changes.
+5. Verify the name field is no-billshock and both reference documents
+   exist. Verify where it was installed and whether a restart is needed.
+6. Report the exact installed path, target agent, installation scope,
+   installation method and actual verification results. If blocked,
+   explain the blocker; do not report success.
+
+Only install the skill. Do not modify my application, cloud resources,
+AWS/Cloudflare credentials, billing settings or deployments.
+```
+
+Agent 可能会申请联网、运行外部包或写入用户级目录。批准前应先核对操作内容。安装完成后，Agent 应报告实际目录，并说明是否需要重新启动会话才能发现新 Skill。**安装只会使 Skill 可被发现，不会立即执行风险审查，也不表示云平台已经配置了费用保护。**
+
+<details>
+<summary><strong>手动安装方式</strong></summary>
+
+### 通过 Skills CLI 安装
+
+如果安装了 Node.js 和 npm，可以让 Agent 执行 [Skills CLI](https://github.com/vercel-labs/skills) 命令，也可以自己执行。**项目级安装时，请在目标应用项目的根目录运行**：
+
+```bash
+# 交互式选择要安装到哪个 Agent
+npx skills add "ZPVIP/no-billshock" --skill no-billshock
+
+# 仅安装到当前项目的 Cursor
+npx skills add "ZPVIP/no-billshock" --skill no-billshock -a cursor
+
+# 全局安装到 Claude Code
+npx skills add "ZPVIP/no-billshock" --skill no-billshock -a claude-code -g
+```
+
+CLI 支持的 Agent 名称包括 `claude-code`、`codex`、`cursor`、`antigravity` 和 `antigravity-cli`。`-g` 表示全局安装，省略时默认项目级。CLI 的实际安装目录依其版本而定，完成后需要验证 Skill 能否被 Agent 发现。`npx` 会运行外部 npm 包，执行前应核对并批准；这个 CLI **不是 NoBillShock 仓库自带的代码**。不想安装 Node.js 的用户可以继续使用后面的手动复制方法。
+
+### 手动复制 Skill 文件
+
+#### 安装路径
 
 | Agent | 项目级（项目根目录下） | 全局（当前用户） |
 | --- | --- | --- |
@@ -72,19 +131,18 @@ no-billshock/
 
 **全局**：适合自己所有本地项目使用。全局安装只是“可被发现”，并不代表每次编程都自动加载全文。
 
-### 下载仓库
+#### 下载仓库
 
-发布 GitHub 后，将 `YOUR_GITHUB_USERNAME` 替换成自己的 GitHub 用户或组织名称：
+克隆仓库：
 
 ```bash
-OWNER=YOUR_GITHUB_USERNAME
-git clone "https://github.com/${OWNER}/no-billshock.git"
+git clone "https://github.com/ZPVIP/no-billshock.git"
 cd no-billshock
 ```
 
 也可以选择 GitHub 上的 **Code -> Download ZIP**，解压后进入仓库根目录。以下命令默认在**本 Skill 仓库根目录**执行。
 
-### 项目级安装：同时用于 Codex / Cursor / Antigravity
+#### 项目级安装：同时用于 Codex / Cursor / Antigravity
 
 macOS / Linux：
 
@@ -109,7 +167,7 @@ mkdir -p "$TARGET/.claude/skills"
 cp -R skills/no-billshock "$TARGET/.claude/skills/"
 ```
 
-### 全局安装：macOS / Linux
+#### 全局安装：macOS / Linux
 
 从本 Skill 仓库根目录，按照使用的 Agent 选择执行：
 
@@ -137,7 +195,7 @@ cp -R skills/no-billshock "$HOME/.gemini/antigravity-cli/skills/"
 
 Codex 与 Cursor 本地模式可共用 `~/.agents/skills/`。但 Cursor 要将个人 Skill 同步到 Cloud Agent 时，一般需要放进 `~/.cursor/skills/`，并在 Settings -> Agents 中启用相关同步选项。Antigravity IDE 和 Antigravity CLI 的全局目录**不同**。
 
-### Windows PowerShell 安装
+#### Windows PowerShell 安装
 
 在 Skill 仓库根目录运行：
 
@@ -157,6 +215,8 @@ Copy-Item -Recurse -Force '.\skills\no-billshock' "$HOME\.claude\skills\"
 ```
 
 其他全局目录依次是 `$HOME\.agents\skills` (Codex)、`$HOME\.cursor\skills` (Cursor)、`$HOME\.gemini\config\skills` (Antigravity IDE) 和 `$HOME\.gemini\antigravity-cli\skills` (Antigravity CLI)。将上述全局示例中的目录替换即可。目标文件夹已存在时先明确是更新还是覆盖，避免多套重复安装。
+
+</details>
 
 ## 如何使用
 

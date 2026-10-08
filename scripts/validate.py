@@ -72,6 +72,12 @@ def main() -> int:
     for readme in (ROOT / "README.md", ROOT / "README.zh-CN.md"):
         check(readme.read_text(encoding="utf-8").startswith("# NoBillShock\n"),
               f"Incorrect project title in {readme.name}")
+    english = (ROOT / "README.md").read_text(encoding="utf-8")
+    chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+    for marker in ("Install with your AI coding agent", "npx skills add", "Installation scope: PROJECT", "Do not run the skill's cloud checks"):
+        check(marker in english, f"English README missing assisted-install guidance: {marker}")
+    for marker in ("让 AI Agent 自动安装", "npx skills add", "Installation scope: PROJECT", "不要"):
+        check(marker in chinese, f"Chinese README missing assisted-install guidance: {marker}")
     for path in EXPECTED:
         check(path.is_file(), f"Missing required file: {path.relative_to(ROOT)}")
     if SKILL_PATH.exists():
