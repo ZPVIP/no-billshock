@@ -335,10 +335,6 @@ See [example review report](examples/expected-report.md). There are three separa
 
 `READY FOR REVIEW` is **not** a promise of zero risk, and never implies permission for an unrequested production deployment.
 
-## Upgrading from an older skill name
-
-If you previously installed a renamed release, remove the old skill folder and any optional `AGENTS.md` / `CLAUDE.md` invocation hints referring to its previous name. Then install `no-billshock/` from this repository. Keeping both installed may cause duplicate discovery or inconsistent reviews.
-
 ## Updating or uninstalling
 
 To **update** an installation, review upstream changes, then replace the installed skill folder with `skills/no-billshock/`. Copying on top of an existing folder can leave obsolete files behind; remove the old copy or use a verified sync operation after backing up local modifications.

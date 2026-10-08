@@ -259,10 +259,6 @@ invoke no-billshock. Skip unrelated and bounded one-shot work.
 
 不要把整个 `SKILL.md` 复制到全局常驻的 `AGENTS.md` 或 `CLAUDE.md`，那会违背精准加载的设计。完整示例见 [examples/optional-repo-instructions.md](examples/optional-repo-instructions.md)。
 
-## 从旧名称升级
-
-如果之前安装了使用旧名称的版本，请删除旧 Skill 文件夹，并移除 `AGENTS.md` / `CLAUDE.md` 中指向旧名称的可选触发规则，再安装 `no-billshock/`。不要保留两个名称的副本，否则可能重复触发或使用不同版本。
-
 ## 更新、卸载和验证
 
 更新：重新复制最新的 `skills/no-billshock/` 文件夹。建议先备份并删除旧副本，避免遗留失效文件。
